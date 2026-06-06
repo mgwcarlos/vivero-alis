@@ -1,6 +1,8 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
+
 const router = express.Router();
 
 const {
@@ -11,14 +13,19 @@ const {
   agregarStock
 } = require('../controllers/plantas.controller');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const nombreUnico = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const extension = path.extname(file.originalname);
-    cb(null, nombreUnico + extension);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'vivero-alis/plantas',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    transformation: [
+      {
+        width: 800,
+        height: 800,
+        crop: 'limit',
+        quality: 'auto'
+      }
+    ]
   }
 });
 
@@ -34,7 +41,10 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage,
-  fileFilter
+  fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  }
 });
 
 router.get('/', obtenerPlantas);

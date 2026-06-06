@@ -20,7 +20,9 @@ const obtenerPlantas = async (req, res) => {
 const crearPlanta = async (req, res) => {
   try {
     const { nombre_comun, stock, precio_venta, descripcion } = req.body;
-    const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+
+    // Cloudinary regresa la URL en req.file.path
+    const imagen = req.file ? req.file.path : null;
 
     if (!nombre_comun || stock === undefined || precio_venta === undefined) {
       return res.status(400).json({
@@ -48,11 +50,14 @@ const crearPlanta = async (req, res) => {
     });
   }
 };
+
 const actualizarPlanta = async (req, res) => {
   try {
     const { id } = req.params;
     const { nombre_comun, stock, precio_venta, descripcion } = req.body;
-    const imagen = req.file ? `/uploads/${req.file.filename}` : null;
+
+    // Cloudinary regresa la URL en req.file.path
+    const imagen = req.file ? req.file.path : null;
 
     if (!nombre_comun || stock === undefined || precio_venta === undefined) {
       return res.status(400).json({
