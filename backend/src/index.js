@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const pool = require('./db');
@@ -11,6 +12,12 @@ const ventasRoutes = require('./routes/ventas.routes');
 const reportesRoutes = require('./routes/reportes.routes');
 
 const app = express();
+
+const uploadsPath = path.join(__dirname, '../uploads');
+
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+}
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -26,8 +33,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
+app.use('/uploads', express.static(uploadsPath));
 app.get('/', (req, res) => {
   res.json({
     mensaje: 'Backend Vivero ALIS funcionando correctamente'
