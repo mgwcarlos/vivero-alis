@@ -63,6 +63,19 @@ app.use('/api/plantas', plantasRoutes);
 app.use('/api/ventas', ventasRoutes);
 app.use('/api/reportes', reportesRoutes);
 
+app.use((error, req, res, next) => {
+  console.error('ERROR GLOBAL:', {
+    message: error.message,
+    name: error.name,
+    stack: error.stack,
+    error
+  });
+
+  res.status(500).json({
+    mensaje: 'Error interno del servidor',
+    error: error.message || 'Error desconocido'
+  });
+});
 app.use((req, res) => {
   res.status(404).json({
     mensaje: 'Ruta no encontrada'
