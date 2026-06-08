@@ -8,7 +8,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
-        'favicon-alis.png',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
         'logo-alis.jpeg'
       ],
       manifest: {
@@ -23,16 +24,16 @@ export default defineConfig({
         scope: '/',
         icons: [
           {
-            src: '/logo-alis.jpeg',
+            src: '/pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/jpeg',
-            purpose: 'any maskable'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
-            src: '/logo-alis.jpeg',
+            src: '/pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/jpeg',
-            purpose: 'any maskable'
+            type: 'image/png',
+            purpose: 'any'
           }
         ]
       },
